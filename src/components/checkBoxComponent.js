@@ -8,7 +8,15 @@ class CheckBoxComponent extends Component{
 
     checkBoxHandler(e){
         let element = e.target
-        alert ("Calling Back end for" +  element.id)
+        let value = element.id
+
+        var url = new URL("http://localhost:3000/api/add"),
+        params = {value: value}
+        Object.keys(params).forEach(key => url.searchParams.append(key, params[key]))
+
+        
+        fetch(url, { query: JSON.stringify({value: value})})
+            .then(res => console.log(res));
       }
 
     render() {
@@ -19,20 +27,15 @@ class CheckBoxComponent extends Component{
             rows.push(<tr> <td><input type='CheckBox' id={i} onClick={this.checkBoxHandler}/>{i}</td></tr>)
         }
     return (
-        <div className="App">
-        <header className="App-header">
-            <p>MERN (Mongo Express React Node)</p><p>Example</p>
-        </header>
-        <table>
-            <th>Select a check box</th>
-            <tbody>
-            {rows}
-            </tbody>
-        </table>
+        <div>
+            <table>
+                <th>Select a check box</th>
+                <tbody>
+                {rows}
+                </tbody>
+            </table>
         </div>
     );
     }
 }
-
-
-    export default CheckBoxComponent
+export default CheckBoxComponent
